@@ -1,0 +1,145 @@
+{
+  "songs": [
+    {
+      "href": "https://open.spotify.com/track/5E4eQoE3wAaVIgSiY06nrl?si=348b904ec8c84a61",
+      "name": "Tego1",
+      "genres": [
+        "Musique Pour Enfants",
+        "New Romantic",
+        "Neo-synthpop",
+        "Microhouse",
+        "Madchester",
+        "Kiwi Rock",
+        "J-core",
+        "Hip Hop Tuga",
+        "Gothic Alternative"
+      ]
+    },
+    {
+      "href": "https://open.spotify.com/track/2AyzpjSnlhztJ26cHd5HtM?si=ff8861b8d0ee4005",
+      "name": "Tego2",
+      "genres": [
+        "Musique Pour Enfants",
+        "New Romantic",
+        "Neo-synthpop",
+        "Microhouse",
+        "Madchester",
+        "Kiwi Rock",
+        "J-core",
+        "Hip Hop Tuga"
+      ]
+    },
+    {
+      "href": "https://open.spotify.com/track/50M1dxVdwnI1Y0TPOtKsnN?si=9a8fba3695d1436f",
+      "name": "Tego3",
+      "genres": [
+        "Musique Pour Enfants",
+        "New Romantic",
+        "Neo-synthpop",
+        "Microhouse",
+        "Madchester",
+        "Kiwi Rock",
+        "J-core"
+      ]
+    },
+    {
+      "href": "https://open.spotify.com/track/2hu9ppCnDVBJuXuUU5yGkw?si=994dceca9efe4423",
+      "name": "Tego4",
+      "genres": [
+        "Musique Pour Enfants",
+        "New Romantic",
+        "Neo-synthpop",
+        "Microhouse",
+        "Madchester",
+        "Kiwi Rock"
+      ]
+    },
+    {
+      "href": "https://open.spotify.com/track/6nqsZe36koVJmDfWnb8lGm?si=12a490d206be4ba1",
+      "name": "Tego5",
+      "genres": [
+        "Musique Pour Enfants",
+        "New Romantic",
+        "Neo-synthpop",
+        "Microhouse",
+        "Madchester"
+      ]
+    },
+    {
+      "href": "https://open.spotify.com/track/3cQPcbg0DdsL3MY3UwkMQa?si=210ae135a28b43e9",
+      "name": "Tego6",
+      "genres": [
+        "Musique Pour Enfants",
+        "New Romantic",
+        "Neo-synthpop",
+        "Microhouse"
+      ]
+    },
+    {
+      "href": "https://open.spotify.com/track/0RpCFoML3vJucfAVCdzzkp?si=458949080b504d0f",
+      "name": "Tego7",
+      "genres": [
+        "Musique Pour Enfants",
+        "New Romantic",
+        "Neo-synthpop"
+      ]
+    },
+    {
+      "href": "https://open.spotify.com/track/3Gi4RmfbnK8vLgWZricbPs?si=efa76119d11f42ae",
+      "name": "Tego8",
+      "genres": [
+        "Musique Pour Enfants",
+        "New Romantic"
+      ]
+    },
+    {
+      "href": "https://open.spotify.com/track/3UWfXRKKFF7MNNwedAcceA?si=da79a9aa42c34dbc",
+      "name": "Tego9",
+      "genres": [
+        "Musique Pour Enfants"
+      ]
+    }
+  ],
+  "genres": [
+        {
+    "genre": "MPF",
+    "count": 9
+    },
+    {
+      "genre":"Musique Pour Enfants",
+      "count":9
+    },
+    {
+      "genre":"New Romantic",
+      "count":8
+    },
+    {
+      "genre":"Neo-synthpop",
+      "count":7
+    },
+    {
+      "genre":"Microhouse",
+      "count":6
+    },
+    {
+      "genre":"Madchester",
+      "count":5
+    },
+    {
+      "genre":"Kiwi Rock",
+      "count":4
+    },
+    {
+      "genre":"J-core",
+      "count":3
+    },
+    {
+      "genre":"Hip Hop Tuga",
+      "count":2
+    },
+    {
+      "genre":"Gothic Alternative",
+      "count":1
+    }
+  ]
+}
