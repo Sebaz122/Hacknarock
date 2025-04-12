@@ -5,40 +5,68 @@ import os
 import base64
 from requests import post,get
 
+
 def _get_random_genre():
     with open('./static/genres.json', 'r') as file:
         data = json.load(file)
         return choice(data)
 
-def _get_track(genre):
-    ...
-
-def _get_genres(song):
-    ...
 
 def prepare_songs_and_genres():
     return _get_random_genre()
 
-def _get_new_token():
-    auth_string = client_id+":"+client_secret
-    auth_bytes=auth_string.encode("utf-8")
-    auth_base64=str(base64.b64encode(auth_bytes), "utf-8")
 
-    url="https://accounts.spotify.com/api/token"
-    headers= {
-        "Authorization": "Basic " + auth_base64,
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
-    data={"grant_type": "client_credentials"}
-    result=post(url,headers=headers, data=data)
+def _get_genres_by_artist(token,artist):
+    '''returns all genres for one artist'''
+    url = "https://api.spotify.com/v1/search"
+    headers= _get_auth_header(token)
+    query= f"q={artist}&type=artist&limit=1"
+    query_url = url+"?"+query
+    result=get(query_url, headers=headers)
     json_result=json.loads(result.content)
-    token=json_result["access_token"]
-    return token
+    genres=[]
+    for i in json_result['artists']['items'][0]['genres']:
+        genre=i
+        genres.append(i)
+    print(genres)
+    return genres
 
-def _get_auth_header(token):
-    return {"Authorization": "Bearer " + token}
+
+def _get_artist_by_track(token,track):
+    '''returns one artist from one track'''
+    url = "https://api.spotify.com/v1/search"
+    headers= _get_auth_header(token)
+    query= f"q={track}&type=track&limit=1"
+    query_url = url+"?"+query
+    result=get(query_url, headers=headers)
+    json_result=json.loads(result.content)
+    artist=json_result['tracks']['items'][0]['album']['artists'][0]['name']
+    print(artist)
+    return artist
+    
+
+def _get_track_by_genres(token, genres):
+    '''returns one track from genres array if exist, else None'''
+    url = "https://api.spotify.com/v1/search"
+    headers= _get_auth_header(token)
+    query= f"q=genres%3A%5B"
+    for i in genres:
+        query+="%22" + i + "%22" + "%2C"
+    query+="%5D"
+    query+="&type=track&limit=1"
+    query_url = url+"?"+query
+    result=get(query_url, headers=headers)
+    json_result=json.loads(result.content)
+    # print(json_result)
+    track=json_result['tracks']['items'][0]['name']
+    print(track)
+    if(track):
+        return track
+    else:
+        return None
 
 def _get_genre_songs_urls(token, genre):
+    '''returns 9 tracks from one genre'''
     url = "https://api.spotify.com/v1/search"
     headers= _get_auth_header(token)
     query= f"q={genre}&type=track&limit=20"
@@ -59,8 +87,30 @@ def _get_genre_songs_urls(token, genre):
                 break
         else:
             continue
-    print(track_urls)
-    print(track_names)
+    # print(track_urls)
+    # print(track_names)
+    return track_names
+
+
+def _get_new_token():
+    auth_string = client_id+":"+client_secret
+    auth_bytes=auth_string.encode("utf-8")
+    auth_base64=str(base64.b64encode(auth_bytes), "utf-8")
+
+    url="https://accounts.spotify.com/api/token"
+    headers= {
+        "Authorization": "Basic " + auth_base64,
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+    data={"grant_type": "client_credentials"}
+    result=post(url,headers=headers, data=data)
+    json_result=json.loads(result.content)
+    token=json_result["access_token"]
+    return token
+
+
+def _get_auth_header(token):
+    return {"Authorization": "Bearer " + token}
 
 
 if __name__=="__main__":
@@ -68,4 +118,8 @@ if __name__=="__main__":
     client_id = os.getenv("CLIENT_ID")
     client_secret= os.getenv("CLIENT_SECRET")
     token=_get_new_token()
-    _get_genre_songs_urls(token, "rock")
+    ###testing functions###
+    # _get_genre_songs_urls(token, "rock")
+    # _get_genres_by_artist(token,"Słoń")
+    # _get_artist_by_track(token,"Mask off")
+    # _get_track_by_genres(token,["hyperpop","breakcore","glitch"])  
