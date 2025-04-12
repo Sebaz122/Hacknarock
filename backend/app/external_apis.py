@@ -16,8 +16,9 @@ def prepare_songs_and_genres():
     return _get_random_genre()
 
 
-def _get_genres_by_artist(token,artist):
+def _get_genres_by_artist(artist):
     '''returns all genres for one artist'''
+    token=_get_new_token()
     url = "https://api.spotify.com/v1/search"
     headers= _get_auth_header(token)
     query= f"q={artist}&type=artist&limit=1"
@@ -32,8 +33,9 @@ def _get_genres_by_artist(token,artist):
     return genres
 
 
-def _get_artist_by_track(token,track):
+def _get_artist_by_track(track):
     '''returns one artist from one track'''
+    token=_get_new_token()
     url = "https://api.spotify.com/v1/search"
     headers= _get_auth_header(token)
     query= f"q={track}&type=track&limit=1"
@@ -45,8 +47,9 @@ def _get_artist_by_track(token,track):
     return artist
     
 
-def _get_track_by_genres(token, genres):
+def _get_track_by_genres(genres):
     '''returns one track from genres array if exist, else None'''
+    token=_get_new_token()
     url = "https://api.spotify.com/v1/search"
     headers= _get_auth_header(token)
     query= f"q=genres%3A%5B"
@@ -65,30 +68,37 @@ def _get_track_by_genres(token, genres):
     else:
         return None
 
-def _get_genre_songs_urls(token, genre):
+def _get_genre_songs_urls(genre):
     '''returns 9 tracks from one genre'''
+    token=_get_new_token()
     url = "https://api.spotify.com/v1/search"
     headers= _get_auth_header(token)
-    query= f"q={genre}&type=track&limit=20"
+    query= f"q=genres%3A%5B%22{genre}%22%5D&type=track&limit=20"
     query_url = url+"?"+query
     result=get(query_url, headers=headers)
     json_result=json.loads(result.content)
     track_urls=[]
     track_names=[]
     max=0
-    for track in json_result['tracks']['items']:
-        track_url=track['external_urls']['spotify']
-        if(track_url):
-            track_urls.append(track_url)
-            track_name=track['name']
-            track_names.append(track_name)
-            max+=1
-            if max==9:
-                break
-        else:
-            continue
+    top_tracks = sorted(json_result['tracks']['items'], key=lambda x: x['popularity'], reverse=True)[:9]
+    # print(top_tracks)
+    # for track in json_result['tracks']['items']:
+    #     track_url=track['external_urls']['spotify']
+    #     track_urls.append(track_url)
+    #     track_name=track['name']
+    #     track_names.append(track_name)
+    #     max+=1
+    #     if max==20:
+    #         break
+    #     else:
+    #         continue
     # print(track_urls)
-    # print(track_names)
+    for track in top_tracks:
+        track_url=track['external_urls']['spotify']
+        track_urls.append(track_url)
+        track_name=track['name']
+        track_names.append(track_name)
+    print(track_names)
     return track_names
 
 
@@ -119,7 +129,7 @@ if __name__=="__main__":
     client_secret= os.getenv("CLIENT_SECRET")
     token=_get_new_token()
     ###testing functions###
-    # _get_genre_songs_urls(token, "rock")
-    # _get_genres_by_artist(token,"Słoń")
+    _get_genre_songs_urls("rock")
+    # _get_genres_by_artist(token,"Hollywood Undead")
     # _get_artist_by_track(token,"Mask off")
     # _get_track_by_genres(token,["hyperpop","breakcore","glitch"])  
