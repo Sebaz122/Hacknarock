@@ -15,6 +15,28 @@ def _get_random_genre():
 def prepare_songs_and_genres():
     return _get_random_genre()
 
+def _get_songs_by_years(years,amount):
+    '''years in format i.e. 2020-2025, amount of songs received '''
+    token=_get_new_token()
+    url = "https://api.spotify.com/v1/search"
+    headers= _get_auth_header(token)
+    query= "q=year%3A"+ years +"&type=track&limit=50&offset=0"
+    query_url = url+"?"+query
+    result=get(query_url, headers=headers)
+    json_result=json.loads(result.content)
+    track_urls=[]
+    track_names=[]
+    songs_amount = [json_result['tracks']['items'][i] for i in range(amount)]
+    for track in songs_amount:
+        track_url=track['external_urls']['spotify']
+        track_urls.append(track_url)
+        track_name=track['name']
+        track_names.append(track_name)
+    # print(track_urls)
+    # print(track_names)
+    return track_names
+
+
 
 def _get_genres_by_artist(artist):
     '''returns all genres for one artist'''
@@ -79,26 +101,12 @@ def _get_genre_songs_urls(genre):
     json_result=json.loads(result.content)
     track_urls=[]
     track_names=[]
-    max=0
-    top_tracks = sorted(json_result['tracks']['items'], key=lambda x: x['popularity'], reverse=True)[:9]
-    # print(top_tracks)
-    # for track in json_result['tracks']['items']:
-    #     track_url=track['external_urls']['spotify']
-    #     track_urls.append(track_url)
-    #     track_name=track['name']
-    #     track_names.append(track_name)
-    #     max+=1
-    #     if max==20:
-    #         break
-    #     else:
-    #         continue
-    # print(track_urls)
-    for track in top_tracks:
+    for track in json_result['tracks']['items']:
         track_url=track['external_urls']['spotify']
         track_urls.append(track_url)
         track_name=track['name']
         track_names.append(track_name)
-    print(track_names)
+    # print(track_names)
     return track_names
 
 
@@ -129,7 +137,5 @@ if __name__=="__main__":
     client_secret= os.getenv("CLIENT_SECRET")
     token=_get_new_token()
     ###testing functions###
-    _get_genre_songs_urls("rock")
-    # _get_genres_by_artist(token,"Hollywood Undead")
-    # _get_artist_by_track(token,"Mask off")
-    # _get_track_by_genres(token,["hyperpop","breakcore","glitch"])  
+    _get_genre_songs_urls("Celtic") 
+    _get_songs_by_years("2020-2023",5)
