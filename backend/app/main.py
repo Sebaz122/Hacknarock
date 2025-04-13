@@ -1,4 +1,6 @@
 from random import randint
+from datetime import datetime
+from email.policy import default
 
 from pydantic import BaseModel
 from fastapi import FastAPI,status
@@ -9,6 +11,8 @@ from app.utils.external_apis import ExternalApis
 from app.utils.Song import Song
 
 app=FastAPI()
+streak={}
+date={}
 users={}
 external_apis = ExternalApis()
 
@@ -18,24 +22,27 @@ formatted_periods = ["2020s", "2010s", "2000s", "90s", "80s", "70s", "60s", "Bef
 class User(BaseModel):
     id:str
     streak:int
+    last_update:datetime
 
 @app.get("/streak/increment")
-async def hardcoded_example(user_id:str):
-    if not user_id in users:
-        users[user_id]=0
-    users[user_id]+=1
-    return JSONResponse(status_code=status.HTTP_200_OK)
+async def increment_streak(user_id:str,current_date:datetime):
+    if not user_id in streak:
+        streak[user_id]=0
+    streak[user_id]+=1
+    date[user_id]=current_date
+    return JSONResponse(status_code=status.HTTP_200_OK,content="ok")
 
 @app.get("/streak/reset")
-async def hardcoded_example(user_id:str):
-    if not user_id in users:
-        users[user_id]=0
-    users[user_id] = 0
-    return JSONResponse(status_code=status.HTTP_200_OK)
+async def reset_streak(user_id:str,current_date:datetime):
+    if not user_id in streak:
+        streak[user_id]=0
+    streak[user_id] = 0
+    date[user_id]=current_date
+    return JSONResponse(status_code=status.HTTP_200_OK,content="ok")
 
 @app.get("/streak/get")
-async def hardcoded_example(user_id:str):
-    return {"Streak":users[user_id]}
+async def get_streak(user_id:str):
+    return {"streak":streak[user_id],"lastUpdate":date[user_id]}
 
 @app.get("/random", response_model=List[Song])
 async def daily():
