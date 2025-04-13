@@ -12,11 +12,17 @@ function DropZone({period, id}) {
     const removeFromBucket = useStore((state) => state.removeFromBucket);
 
 
+    const allItemsAreWrong = items.every((item) => item.period !== period);
+    const someItemsAreWrong = items.some((item) => item.period !== period);
+
     const displayErrors = () => {
-        console.log("shouldDisplayError: ", shouldDisplayError)
-        const badPeriod = items.some((item) => item.period !== period);
-        return shouldDisplayError && badPeriod;
+        return shouldDisplayError && allItemsAreWrong;
     };
+
+    const displayWarning = () => {
+        return shouldDisplayError && someItemsAreWrong && !allItemsAreWrong;
+    };
+
 
     const [{isOver}, dropRef] = useDrop({
         accept: "track",
@@ -44,12 +50,12 @@ function DropZone({period, id}) {
     };
 
     return (
-        <Box className={`drop-zone ${displayErrors() ? "errors" : ""}`}>
+        <Box className={`drop-zone ${displayWarning() ? "warnings" : ""} ${displayErrors() ? "errors" : ""}`}>
             <Typography className="drop-text">{period}</Typography>
 
             <Box
                 ref={dropRef}
-                className={`drop-area ${isOver ? "is-over" : ""} ${displayErrors() ? "errors" : ""}`}
+                className={`drop-area ${isOver ? "is-over" : ""} ${displayWarning() ? "warnings" : ""} ${displayErrors() ? "errors" : ""}`}
             >
                 <Box
                     sx={{

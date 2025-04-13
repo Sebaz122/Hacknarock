@@ -7,10 +7,26 @@ from fastapi import FastAPI,status
 from fastapi.responses import JSONResponse
 from typing import List
 from app.utils.external_apis import ExternalApis
+from fastapi.middleware.cors import CORSMiddleware
+
 
 from app.utils.Song import Song
 
 app=FastAPI()
+origins = [
+    "http://127.0.0.1:5173",  # Your React development server URL
+    "http://localhost:5173",   # If you're also running with localhost
+]
+
+# Add CORSMiddleware to allow requests from the specified origins
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allow your frontend app
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
+
 streak={}
 date={}
 users={}
