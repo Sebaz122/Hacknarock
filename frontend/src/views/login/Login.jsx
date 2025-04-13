@@ -111,9 +111,11 @@ function Login() {
         }
     }, [token]);
 
-    if(token && name){
-        navigate("/", {replace : true})
-    }
+    useEffect(() => {
+        if (token && name) {
+            navigate("/", { replace: true });
+        }
+    }, [token, name, navigate]);
 
     return (
         <Box className="login">
