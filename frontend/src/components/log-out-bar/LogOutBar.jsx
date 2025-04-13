@@ -9,7 +9,6 @@ function LogOutBar({ name }) {
     const handleLogOut = () => {
         useStore.getState().setToken(null);
         navigate("/login");
-        console.log("logout");
     };
 
     return (

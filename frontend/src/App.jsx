@@ -8,8 +8,6 @@ import {useStore} from "./store.js";
 function PrivateRoute({children}) {
     const token = useStore((state) => state.token);
 
-    console.log("token: ", token)
-
 
     if (!token) {
         return <Navigate to="/login"/>;

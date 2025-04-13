@@ -93,7 +93,6 @@ function Login() {
         const code = urlParams.get("code");
 
         if (code) {
-            console.log("Authorization code:", code);
             getToken(code);
         }
     }, []);
@@ -106,7 +105,7 @@ function Login() {
                         setName(profile.display_name)
                         useStore.getState().setName(profile.display_name);
                     }
-                }).then(navigate("/")
+                }).then(navigate("/mock")
             )
                 .catch(err => console.error("Failed to fetch profile:", err));
         }

@@ -1,29 +1,32 @@
-import { Box, Button, Typography } from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import LogOutBar from "../../../components/log-out-bar/LogOutBar.jsx";
 import "../Main.scss";
 import Logo from "../../../components/logo/Logo.jsx";
 import TrackGrid from "../../../components/track-grid/TrackGrid.jsx";
 import DropZoneGrid from "../../../components/drop-zone-grid/DropZoneGrid.jsx";
-import { periods } from "../../../consts.js";
-import { useStore } from "../../../store.js";
-import { useState, useMemo, useEffect } from "react";
+import {periods} from "../../../consts.js";
+import {useStore} from "../../../store.js";
+import {useState, useMemo, useEffect} from "react";
+import Confetti from 'react-confetti';
+
 
 function MainMock() {
     const [streak, setStreak] = useState(6);
+    const [lastUpdate, setLastUpdate] = useState("2025-04-12T01:48:57.198Z")
+    const [currentTry, setCurrentTry] = useState(0)
 
-    const currentErrors = useStore((state) => state.currentErrors);
-    const lastUpdate = useStore((state) => state.update);
     const name = useStore((state) => state.name);
     const buckets = useStore((state) => state.buckets);
-    const areAllIdsPresent = useStore((state) => state.areAllIdsPresent);
     const displayErrors = useStore((state) => state.displayErrors);
     const incrementCurrentAttempt = useStore((state) => state.incrementCurrentAttempt);
     const currentAttempt = useStore((state) => state.currentAttempt);
-    const empytAllBuckets = useStore((state) => state.emptyAllBuckets);
+    const emptyAllBuckets = useStore((state) => state.emptyAllBuckets);
 
     useEffect(() => {
-        empytAllBuckets();
+        emptyAllBuckets();
     }, []);
+
+    const [showConfetti, setShowConfetti] = useState(false);
 
 
     const idsPresent = useMemo(() => {
@@ -43,16 +46,52 @@ function MainMock() {
     }, [lastUpdate, idsPresent]);
 
     const tracksInfos = [
-        { url: "https://open.spotify.com/track/2QjOHCTQ1Jl3zawyYOpxh6", name: "Sweet Weather", category: "2020s", id: "1" },
-        { url: "https://open.spotify.com/track/2QjOHCTQ1Jl3zawyYOpxh6", name: "Sweet Weather", category: "2010s", id: "2" },
-        { url: "https://open.spotify.com/track/2QjOHCTQ1Jl3zawyYOpxh6", name: "Sweet Weather", category: "2000s", id: "3" },
-        { url: "https://open.spotify.com/track/2QjOHCTQ1Jl3zawyYOpxh6", name: "Sweet Weather", category: "90s", id: "4" },
-        { url: "https://open.spotify.com/track/2QjOHCTQ1Jl3zawyYOpxh6", name: "Sweet Weather", category: "80s", id: "5" },
-        { url: "https://open.spotify.com/track/2QjOHCTQ1Jl3zawyYOpxh6", name: "Sweet Weather", category: "70s", id: "6" },
-        { url: "https://open.spotify.com/track/2QjOHCTQ1Jl3zawyYOpxh6", name: "Sweet Weather", category: "60s", id: "7" },
-        { url: "https://open.spotify.com/track/2QjOHCTQ1Jl3zawyYOpxh6", name: "Sweet Weather", category: "Before", id: "8" },
-        { url: "https://open.spotify.com/track/2QjOHCTQ1Jl3zawyYOpxh6", name: "Sweet Weather", category: "Celtic", id: "9" },
-    ];
+        {
+            "name": "Maneater",
+            "url": "https://open.spotify.com/track/7j74lucZ59vqN67Ipe2ZcY",
+            "category": "80s"
+        },
+        {
+            "name": "Californication",
+            "url": "https://open.spotify.com/track/48UPSzbZjgc449aqz8bxox",
+            "category": "90s"
+        },
+        {
+            "name": "Hotel Room Service",
+            "url": "https://open.spotify.com/track/0OPyDgTRuIdCJ9B4bYSths",
+            "category": "2000s"
+        },
+        {
+            "name": "California",
+            "url": "https://open.spotify.com/track/4KW66ZVoSyUN0TJXdL9mLc",
+            "category": "2010s"
+        },
+        {
+            "name": "I Was Made For Lovin' You",
+            "url": "https://open.spotify.com/track/07q0QVgO56EorrSGHC48y3",
+            "category": "70s"
+        },
+        {
+            "name": "I'm Still Standing",
+            "url": "https://open.spotify.com/track/1jDJFeK9x3OZboIAHsY9k2",
+            "category": "80s"
+        },
+        {
+            "name": "Wind Of Change",
+            "url": "https://open.spotify.com/track/3ovjw5HZZv43SxTwApooCM",
+            "category": "90s"
+        },
+        {
+            "name": "Svärdsjö Polska",
+            "url": "https://open.spotify.com/track/5u06jISj4KCIRooiahm7wu",
+            "category": "Celtic"
+        },
+        {
+            "name": "In the End",
+            "url": "https://open.spotify.com/track/60a0Rd6pjrkxjPbaKzXjfq",
+            "category": "2000s"
+        }
+    ]
 
     const checkIfValid = () => {
         const isValid = buckets.every((bucket, index) =>
@@ -69,30 +108,44 @@ function MainMock() {
         incrementCurrentAttempt();
         if (checkIfValid()) {
             setStreak(streak + 1)
+            setLastUpdate("2025-04-13T01:48:57.198Z")
+            setShowConfetti(true);
+
+            setTimeout(() => setShowConfetti(false), 10000);
         } else {
-            console.log("EEE NOT SUBMITTEDDD")
+            setCurrentTry(currentTry + 1)
         }
         if (currentAttempt === 5) {
-            // Handle streak removal
+            setStreak(0)
         }
-        // handle
     };
 
     return (
         <Box className="main">
+            {showConfetti && <Confetti/>}
             <Box component="header" className="header">
-                <LogOutBar name={name} />
+                <LogOutBar name={name}/>
             </Box>
             <Box component="main" className="content">
-                <Logo />
+                <Logo/>
                 <Typography className="welcome">Welcome, {name}!</Typography>
                 {streak !== 0 && (
                     <Box className="streak">
                         Your current streak is: {streak} 🔥
                     </Box>
                 )}
-                <TrackGrid trackInfos={tracksInfos} />
-                <DropZoneGrid periods={periods} />
+                <TrackGrid trackInfos={tracksInfos}/>
+                {showConfetti && (
+                    <Confetti
+                        width={window.innerWidth}
+                        height={1500}
+                        numberOfPieces={500}
+                        gravity={0.2}
+                        recycle={false}
+                    />
+                )}
+                <DropZoneGrid periods={periods}/>
+                <Typography>Current try: {currentTry} / 5</Typography>
                 <Button
                     onClick={submit}
                     disabled={!submitEnabled}

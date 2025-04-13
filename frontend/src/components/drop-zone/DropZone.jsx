@@ -16,7 +16,7 @@ function DropZone({period, id}) {
     const someItemsAreWrong = items.some((item) => item.period !== period);
 
     const displayErrors = () => {
-        return shouldDisplayError && allItemsAreWrong;
+        return shouldDisplayError && allItemsAreWrong && items.length > 0;
     };
 
     const displayWarning = () => {
