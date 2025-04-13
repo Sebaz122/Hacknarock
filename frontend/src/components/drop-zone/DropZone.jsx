@@ -4,10 +4,13 @@ import {useState} from "react";
 import "./DropZone.scss";
 import {useStore} from "../../store.js";
 
-function DropZone({period}) {
+function DropZone({period, id}) {
     const [items, setItems] = useState([]);
     const shouldDisplayError = useStore((state) => state.shouldDisplayError);
     const notDisplayErrors = useStore((state) => state.notDisplayErrors);
+    const addToBucket = useStore((state) => state.addToBucket);
+    const removeFromBucket = useStore((state) => state.removeFromBucket);
+
 
     const displayErrors = () => {
         console.log("shouldDisplayError: ", shouldDisplayError)
@@ -18,10 +21,10 @@ function DropZone({period}) {
     const [{isOver}, dropRef] = useDrop({
         accept: "track",
         drop: (item) => {
-            console.log("✅ Drop received:", item);
-            notDisplayErrors();
             setItems((prevItems) => {
                 if (!prevItems.some((existingItem) => existingItem.id === item.id)) {
+                    notDisplayErrors();
+                    addToBucket(id, item.id)
                     return [...prevItems, item];
                 }
                 return prevItems;
@@ -33,7 +36,11 @@ function DropZone({period}) {
     });
 
     const handleDelete = (index) => {
-        setItems((prevItems) => prevItems.filter((_, i) => i !== index)); // Remove item by index
+        setItems((prevItems) => {
+            const itemToRemove = prevItems[index];
+            removeFromBucket(id, itemToRemove.id);
+            return prevItems.filter((_, i) => i !== index);
+        });
     };
 
     return (

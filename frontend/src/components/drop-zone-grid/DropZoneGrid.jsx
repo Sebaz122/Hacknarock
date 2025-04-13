@@ -5,8 +5,8 @@ import "./DropZoneGrid.scss";
 function DropZoneGrid({periods}) {
     return (
         <Box className="drop-zone-grid">
-            {periods.map((period) => (
-                <DropZone period={period}/>
+            {periods.map((period, id) => (
+                <DropZone period={period} id={id}/>
             ))}
         </Box>
     );

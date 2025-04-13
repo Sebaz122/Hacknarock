@@ -5,18 +5,16 @@ export const useStore = create(
     persist(
         (set) => ({
             token: null,
-            tokenExpiration: null,
             name: "Test",
             streak: 0,
             shouldDisplayError: false,
             currentAttempt: 0,
-            lastUpdate: null,
+            update: "2025-04-12T01:48:57.198Z",
+            buckets: [[],[],[],[],[],[],[],[],[]],
 
 
             setToken: (newToken) => set(() => ({token: newToken})),
             deleteToken: () => set(() => ({token: null})),
-
-            setTokenExpiration: (newTokenExpiration) => set(() => ({token: newTokenExpiration})),
 
             setName: (newName) => set(() => ({name: newName})),
             deleteName: () => set(() => ({name: null})),
@@ -29,7 +27,25 @@ export const useStore = create(
 
             incrementCurrentAttempt: () => set((state) => ({currentAttempt: state.currentAttempt + 1})),
 
-            setLastUpdate: (newLastUpdate) => set(() => ({lastUpdate: newLastUpdate})),
+            setLastUpdate: (newLastUpdate) => set(() => ({update: newLastUpdate})),
+
+            addToBucket: (index, trackId) => set((state) => {
+                const updatedBuckets = [...state.buckets];
+                if (index >= 0 && index < updatedBuckets.length) {
+                    updatedBuckets[index] = [...updatedBuckets[index], trackId];
+                }
+                return { buckets: updatedBuckets };
+            }),
+
+            removeFromBucket: (index, trackId) => set((state) => {
+                const updatedBuckets = [...state.buckets];
+                if (index >= 0 && index < updatedBuckets.length) {
+                    updatedBuckets[index] = updatedBuckets[index].filter((id) => id !== trackId);
+                }
+                return { buckets: updatedBuckets };
+            }),
+
+            emptyAllBuckets: () => set(() => ({ buckets: [[], [], [], [], [], [], [], [], []] })),
         }),
         {
             name: "storage"

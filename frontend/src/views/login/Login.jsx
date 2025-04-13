@@ -32,7 +32,7 @@ const base64encode = (input) => {
 
 async function fetchProfile(token) {
     const result = await fetch("https://api.spotify.com/v1/me", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {Authorization: `Bearer ${token}`}
     });
     return await result.json();
 }
@@ -106,16 +106,12 @@ function Login() {
                         setName(profile.display_name)
                         useStore.getState().setName(profile.display_name);
                     }
-                })
+                }).then(navigate("/")
+            )
                 .catch(err => console.error("Failed to fetch profile:", err));
         }
     }, [token]);
 
-    useEffect(() => {
-        if (token && name) {
-            navigate("/", { replace: true });
-        }
-    }, [token, name, navigate]);
 
     return (
         <Box className="login">

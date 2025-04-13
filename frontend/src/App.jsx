@@ -7,12 +7,11 @@ import {useStore} from "./store.js";
 
 function PrivateRoute({children}) {
     const token = useStore((state) => state.token);
-    const tokenExpiration = useStore((state) => state.tokenExpiration);
 
-    const isTokenExpired = tokenExpiration && new Date() > new Date(tokenExpiration);
+    console.log("token: ", token)
 
-    if (!token || isTokenExpired) {
-        useStore.getState().deleteToken()
+
+    if (!token) {
         return <Navigate to="/login"/>;
     }
 
