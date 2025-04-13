@@ -9,7 +9,7 @@ function Track({ url, trackName, period, id }) {
 
     const [{ isDragging }, drag, preview] = useDrag({
         type: "track",
-        item: { id, url, trackName, period },
+        item: { id, url, trackName, period, id },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
