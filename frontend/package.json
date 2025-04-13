@@ -4,14 +4,26 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "react-scripts start --host 127.0.0.1",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/material": "^7.0.2",
+    "axios": "^1.8.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.5.0",
+    "react-spotify-embed": "^2.0.4",
+    "sass": "^1.86.3",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

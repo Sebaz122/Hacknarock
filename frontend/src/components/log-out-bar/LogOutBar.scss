@@ -1,0 +1,27 @@
+.log-out-bar {
+    background-color: #324646;
+    width: 100vw;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 2px solid #3a3a3a;
+
+    .text {
+        font-size: 24px;
+        font-weight: 500;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .log-out-button {
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        height: 40px;
+        margin-right: 20px;
+    }
+}
